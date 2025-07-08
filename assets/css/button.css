@@ -1,0 +1,54 @@
+@utility control-btn {
+  @apply inline-flex items-center justify-center;
+  @apply min-h-10 shrink-0 gap-2 px-4 py-2;
+  @apply relative whitespace-nowrap;
+  @apply isolate overflow-clip rounded-xl text-sm font-medium;
+  @apply outline-0 duration-300;
+
+  @apply hover:bg-slate-50 active:bg-slate-100;
+
+  @apply disabled:cursor-not-allowed disabled:bg-slate-100;
+}
+
+@utility control-btn-sm {
+  @apply min-h-7 rounded-lg px-2 py-1 text-xs;
+}
+
+@utility control-btn-lg {
+  @apply min-h-12 px-6 py-3;
+}
+
+@utility control-btn-default {
+  @apply bg-white shadow;
+  @apply ring ring-slate-200 hover:ring-slate-300;
+}
+
+@utility control-btn-main {
+  @apply bg-green-600 text-white;
+  @apply inset-ring inset-ring-white/30;
+  @apply ring ring-green-700;
+  @apply hover:bg-green-500;
+}
+
+.control-btn-group {
+  @apply isolate flex;
+  @apply rounded-lg shadow duration-300;
+  @apply ring ring-slate-200 hover:ring-slate-300;
+  @apply divide-x divide-slate-200;
+
+  & > .control-btn {
+    @apply rounded-none shadow-none;
+  }
+
+  & > .control-btn:first-child {
+    @apply rounded-l-lg;
+  }
+
+  & > .control-btn:last-child {
+    @apply rounded-r-lg;
+  }
+}
+
+button {
+  @apply cursor-pointer;
+}
