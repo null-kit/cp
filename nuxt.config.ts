@@ -7,6 +7,9 @@ export default defineNuxtConfig({
         driver: 'fs',
         base: './storage'
       }
+    },
+    imports: {
+      dirs: ['server/validation']
     }
   },
   routeRules: {
