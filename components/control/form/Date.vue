@@ -81,7 +81,9 @@
 </template>
 
 <script setup lang="ts">
-const { disabledDates = [], ...props } = defineProps<{
+import { formatDate } from '~/shared/utils/cp-format';
+
+const { disabledDates = [] } = defineProps<{
   label?: string;
   required?: boolean;
   disabledDates?: Date[];
@@ -90,6 +92,13 @@ const { disabledDates = [], ...props } = defineProps<{
 
 const [model, modifiers] = defineModel<Date | string | undefined>({
   required: true,
+  get(value) {
+    if (value && modifiers.iso) {
+      return formatDate(value, { format: 'iso' });
+    }
+
+    return value;
+  },
   set(value) {
     if (value && modifiers.iso) {
       if (Array.isArray(value)) return value.map((date) => formatDate(date, { format: 'iso' }));
@@ -195,4 +204,10 @@ const isOutside = (date: Date) => date.getMonth() !== currentMonth.value;
 const isDisabled = (date: Date) => {
   return disabledDates.some((d) => new Date(d).toDateString() === date.toDateString());
 };
+
+onMounted(() => {
+  if (model.value) {
+    selectedDates.value = [new Date(model.value)];
+  }
+});
 </script>
