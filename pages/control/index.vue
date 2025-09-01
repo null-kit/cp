@@ -5,5 +5,5 @@
 </template>
 
 <script setup lang="ts">
-definePageMeta({ layout: 'control' });
+definePageMeta({ layout: 'control', title: 'Welcome Back' });
 </script>
