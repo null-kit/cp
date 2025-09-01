@@ -22,7 +22,7 @@
         <NuxtLink
           to="/control"
           active-class="pointer-events-none"
-          class="-mr-2 flex rounded-full px-4 py-1 text-slate-400 ring-slate-200 duration-200 hover:text-black hover:ring-1"
+          class="flex rounded-full px-4 py-1 text-slate-400 ring-slate-200 duration-200 hover:text-black hover:ring-1"
         >
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" class="m-auto size-4">
             <path
