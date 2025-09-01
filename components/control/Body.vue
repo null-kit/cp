@@ -3,7 +3,7 @@
     <Title :key="$route.fullPath">{{ title || $route.meta.title }}</Title>
 
     <header
-      v-if="title || $route.meta.title"
+      v-if="$route.fullPath !== '/control' && (title || $route.meta.title)"
       class="z-1 flex items-center gap-4 rounded-t-2xl border-b border-slate-200 bg-white px-4 py-3"
     >
       <button class="control-btn control-btn-default size-10 p-2" @click="$router.back()" title="Back">
