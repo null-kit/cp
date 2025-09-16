@@ -1,18 +1,15 @@
-import type { ZodSafeParseResult } from 'zod/v4';
+import { z } from 'zod/v4';
 
-/**
- * Validates a Zod parse result and either throws an error or returns the data.
- */
-export const validateSchema = <T>(result: ZodSafeParseResult<NonNullable<T>>): NonNullable<T> => {
+export const validateSchema = <T>(result: z.ZodSafeParseResult<T>): T => {
   if (!result.success) {
-    throw createError({
-      statusCode: 400,
-      statusMessage: 'Validation failed',
-      data: result.error.issues.map((issue) => ({
-        message: issue.message,
-        path: issue.path[issue.path.length - 1]
-      }))
-    });
+    const issues = z.flattenError(result.error);
+
+    const data = Object.entries(issues.fieldErrors).map(([path, messages]) => ({
+      message: Array.isArray(messages) ? messages[0] : messages,
+      path
+    }));
+
+    throw createError({ status: 422, statusMessage: 'Unprocessable Entity', data });
   }
 
   return result.data;
