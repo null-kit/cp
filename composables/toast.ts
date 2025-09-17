@@ -43,7 +43,7 @@ export const useToast = () => {
         [
           h('div', { class: 'w-full' }, [
             h('h3', { class: 'font-semibold ' + meta[toast.type ? toast.type : 'info'].color }, toast.title),
-            toast.message && h('p', { class: 'mt-1' }, toast.message)
+            toast.message && h('p', { class: 'mt-1 text-slate-800' }, toast.message)
           ]),
           h(
             'svg',
