@@ -49,7 +49,10 @@ const { hasAuth, login } = useControlSession();
 useHead({
   title: 'Dashboard',
   titleTemplate: `%s - Control ${app && '- ' + app.name}`,
-  meta: [{ name: 'robots', content: 'noindex, nofollow' }]
+  meta: [
+    { name: 'robots', content: 'noindex, nofollow' },
+    { name: 'color-scheme', content: 'light' }
+  ]
 });
 
 const formData = reactive({ email: '', password: '' });
