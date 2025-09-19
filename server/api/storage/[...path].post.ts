@@ -50,7 +50,7 @@ export default defineEventHandler(async (event) => {
 
       const compress = await sharp(media.data)
         .webp({ quality: 80 })
-        .resize(Number(width) || null, Number(height) || null, { fit })
+        .resize(Number(width) || null, Number(height) || null, { fit, background: { r: 0, g: 0, b: 0, alpha: 0 } })
         .toBuffer();
 
       await setItemRaw(`${path}:${datetime}_${fileName}.webp`, compress);
