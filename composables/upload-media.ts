@@ -2,8 +2,8 @@ type UploadMedia = {
   newFile: File | File[];
   oldFile?: string;
   directory?: string;
-  width: number | null;
-  height: number | null;
+  width?: number | null;
+  height?: number | null;
   fit?: string;
   noAuth?: string;
 };

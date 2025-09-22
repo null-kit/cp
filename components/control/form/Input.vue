@@ -81,7 +81,7 @@ const {
   inputClass
 } = defineProps<{
   label?: string;
-  type?: 'text' | 'password' | 'email' | 'number' | 'textarea' | 'select';
+  type?: 'text' | 'password' | 'email' | 'number' | 'textarea' | 'select' | 'file' | 'url';
   name?: string;
   placeholder?: string;
   inputClass?: string;
