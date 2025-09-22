@@ -32,7 +32,7 @@
 
 .control-btn-group {
   @apply isolate flex;
-  @apply rounded-lg shadow duration-300;
+  @apply rounded-lg bg-white shadow duration-300;
   @apply ring ring-slate-200 hover:ring-slate-300;
   @apply divide-x divide-slate-200;
 

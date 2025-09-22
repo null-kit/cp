@@ -39,8 +39,6 @@
         </svg>
       </button>
     </nav>
-
-    <FormSelect v-model="perPage" :options="[25, 50, 100, 500, 1000]" autoclose />
   </div>
 </template>
 
