@@ -6,7 +6,7 @@
     </label>
 
     <div class="flex">
-      <div v-if="slots.left" class="field-slot shrink-0 overflow-clip rounded-r-none">
+      <div v-if="slots.left" class="control-form-slot shrink-0 overflow-clip rounded-r-none">
         <slot name="left" />
       </div>
 
@@ -58,12 +58,12 @@
         <ControlFormValidate v-if="name" :name />
       </div>
 
-      <div v-if="slots.right" class="field-slot shrink-0 overflow-clip rounded-l-none">
+      <div v-if="slots.right" class="control-form-slot shrink-0 overflow-clip rounded-l-none">
         <slot name="right" />
       </div>
     </div>
 
-    <div v-if="help || $slots.help" class="field-help">
+    <div v-if="help || $slots.help" class="control-form-help">
       <slot name="help">{{ help }} </slot>
     </div>
   </div>
