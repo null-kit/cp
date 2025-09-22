@@ -4,7 +4,7 @@
       <button
         v-if="currentPage >= 2"
         type="button"
-        class="btn size-10 p-2"
+        class="control-btn size-10 p-2"
         title="Previous Page"
         @click.prevent="currentPage--"
       >
@@ -17,7 +17,7 @@
         v-for="page in pages"
         :key="page"
         type="button"
-        class="btn hidden size-10 md:grid"
+        class="control-btn hidden size-10 md:grid"
         :class="{
           'text-surface/50 pointer-events-none': page === '...',
           'text-accent bg-surface/3 pointer-events-none font-medium': page === currentPage
@@ -30,7 +30,7 @@
       <button
         v-if="totalPages > currentPage"
         type="button"
-        class="btn size-10 p-2"
+        class="control-btn size-10 p-2"
         title="Next Page"
         @click.prevent="currentPage++"
       >
