@@ -77,6 +77,8 @@
         </div>
       </div>
     </ControlDropdown>
+
+    <ControlFormValidate v-if="name" :name />
   </div>
 </template>
 
@@ -88,6 +90,7 @@ const { disabledDates = [] } = defineProps<{
   required?: boolean;
   disabledDates?: Date[];
   iso?: boolean;
+  name?: string;
 }>();
 
 const [model, modifiers] = defineModel<Date | string | undefined>({
