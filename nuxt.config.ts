@@ -13,6 +13,7 @@ export default defineNuxtConfig({
     }
   },
   routeRules: {
+    '/control/**': { ssr: false },
     '/storage/**': { proxy: `/api/storage/**` }
   },
   alias: {
