@@ -1,43 +1,36 @@
 <template>
-  <ClientOnly>
-    <div class="control-bg-dot isolate min-h-dvh bg-slate-50 text-sm text-slate-800">
-      <div v-if="hasAuth" class="mx-auto max-w-7xl px-4">
-        <ControlHeader />
+  <div class="control-bg-dot isolate min-h-dvh bg-slate-50 text-sm text-slate-800">
+    <div v-if="hasAuth" class="mx-auto max-w-7xl px-4">
+      <ControlHeader />
 
-        <main class="grid grid-cols-1 items-start gap-8 pb-8">
-          <slot />
-        </main>
-      </div>
-
-      <main v-else class="p-5 md:py-14">
-        <section class="mx-auto max-w-4xl rounded-3xl bg-white py-10 shadow ring-1 ring-slate-200 md:py-16">
-          <div class="mb-10 flex justify-center">
-            <img
-              v-if="control?.logo?.path"
-              :src="control?.logo?.path"
-              :class="control?.logo?.class || 'h-7'"
-              alt="Logo"
-            />
-          </div>
-
-          <form class="mx-auto max-w-md space-y-8 px-6" @submit.prevent="login(formData)">
-            <ControlFormInput v-model="formData.email" name="email" type="text" placeholder="Enter Email" />
-
-            <ControlFormInput
-              v-model="formData.password"
-              name="password"
-              type="password"
-              placeholder="Enter Password"
-            />
-
-            <div class="text-center">
-              <button type="submit" class="control-btn control-btn-main w-44">Login</button>
-            </div>
-          </form>
-        </section>
+      <main class="grid grid-cols-1 items-start gap-8 pb-8">
+        <slot />
       </main>
     </div>
-  </ClientOnly>
+
+    <main v-else class="p-5 md:py-14">
+      <section class="mx-auto max-w-4xl rounded-3xl bg-white py-10 shadow ring-1 ring-slate-200 md:py-16">
+        <div class="mb-10 flex justify-center">
+          <img
+            v-if="control?.logo?.path"
+            :src="control?.logo?.path"
+            :class="control?.logo?.class || 'h-7'"
+            alt="Logo"
+          />
+        </div>
+
+        <form class="mx-auto max-w-md space-y-8 px-6" @submit.prevent="login(formData)">
+          <ControlFormInput v-model="formData.email" name="email" type="text" placeholder="Enter Email" />
+
+          <ControlFormInput v-model="formData.password" name="password" type="password" placeholder="Enter Password" />
+
+          <div class="text-center">
+            <button type="submit" class="control-btn control-btn-main w-44">Login</button>
+          </div>
+        </form>
+      </section>
+    </main>
+  </div>
 </template>
 
 <script setup lang="ts">

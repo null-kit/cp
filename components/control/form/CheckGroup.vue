@@ -40,7 +40,7 @@
 </template>
 
 <script setup lang="ts" generic="T extends Record<string, unknown>">
-const model = defineModel<string | number | undefined>();
+const model = defineModel<string | number | undefined | number[] | string[]>();
 
 const {
   type = 'checkbox',
