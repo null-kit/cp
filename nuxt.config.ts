@@ -14,7 +14,10 @@ export default defineNuxtConfig({
   },
   routeRules: {
     '/control/**': { ssr: false },
-    '/storage/**': { proxy: `/api/storage/**` }
+    '/storage/**': {
+      proxy: '/api/storage/**',
+      headers: { 'cache-control': 'public, immutable', expires: '1y' }
+    }
   },
   alias: {
     '@null-kit/cp': fileURLToPath(new URL('./assets/css/source.css', import.meta.url)),
