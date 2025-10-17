@@ -19,7 +19,7 @@
         </button>
       </div>
 
-      <div class="grid size-32 rounded-xl border bg-white py-3 text-center">
+      <div class="grid size-32 rounded-xl bg-white py-3 text-center shadow ring ring-slate-200">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="m-auto mb-2 size-10 text-slate-400">
           <path
             fill="currentColor"
