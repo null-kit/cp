@@ -1,3 +1,7 @@
-import { Prisma } from '@prisma/client';
-
-export type User = Prisma.UserGetPayload<object>;
+export type User = {
+  id: number;
+  name: string;
+  email: string;
+  createdAt: Date;
+  updatedAt: Date;
+};
