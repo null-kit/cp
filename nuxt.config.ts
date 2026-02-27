@@ -1,6 +1,14 @@
-import { fileURLToPath } from 'url';
+import { createResolver } from 'nuxt/kit';
+
+const { resolve } = createResolver(import.meta.url);
 
 export default defineNuxtConfig({
+  alias: {
+    '@null-kit/cp': resolve('./assets/css/source.css'),
+    '@null-kit/cp/article': resolve('./assets/css/article.css'),
+    '@null-kit/cp/utils': resolve('./shared/utils')
+  },
+
   nitro: {
     storage: {
       fs: {
@@ -12,15 +20,12 @@ export default defineNuxtConfig({
       dirs: ['server/validation']
     }
   },
+
   routeRules: {
     '/control/**': { ssr: false },
     '/storage/**': {
       proxy: '/api/storage/**',
       headers: { 'cache-control': 'public, immutable', expires: '1y' }
     }
-  },
-  alias: {
-    '@null-kit/cp': fileURLToPath(new URL('./assets/css/source.css', import.meta.url)),
-    '@null-kit/cp/article': fileURLToPath(new URL('./assets/css/article.css', import.meta.url))
   }
 });

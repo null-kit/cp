@@ -83,8 +83,6 @@
 </template>
 
 <script setup lang="ts">
-import { formatDate } from '~/shared/utils/cp-format';
-
 const { disabledDates = [] } = defineProps<{
   label?: string;
   required?: boolean;

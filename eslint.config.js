@@ -4,6 +4,7 @@ export default withNuxt({
   rules: {
     'vue/html-self-closing': 'off',
     'vue/no-v-html': 'off',
-    'no-undef': 'off'
+    'no-undef': 'off',
+    'vue/require-default-prop': 'off'
   }
 });
