@@ -1,4 +1,4 @@
-import { z } from 'zod/v4';
+import { z } from 'zod';
 import { hashSync } from 'bcrypt';
 
 export const userSchema = z.object({
