@@ -76,20 +76,12 @@ const editor = useEditor({
     ListItem,
     Blockquote,
     Gapcursor,
-    Link.configure({
-      openOnClick: false,
-      HTMLAttributes: { rel: null }
-    }),
+    Link.configure({ openOnClick: false, HTMLAttributes: { rel: null } }),
     Heading.configure({ levels: [2, 3, 4] }),
     Placeholder.configure({ placeholder: 'Enter Body' }),
     TextAlign.configure({ types: ['heading', 'paragraph'] }),
     Youtube.configure({ nocookie: true, modestBranding: true }),
-    TableKit.configure({
-      table: {
-        resizable: true,
-        renderWrapper: true
-      }
-    }),
+    TableKit.configure({ table: { resizable: true, renderWrapper: true } }),
     Image.extend({
       addAttributes() {
         return {
