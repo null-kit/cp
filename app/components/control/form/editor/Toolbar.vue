@@ -2,7 +2,7 @@
   <div class="sticky top-0 z-1 flex justify-center gap-3 rounded-t-lg border-b border-slate-200 bg-white p-2">
     <div class="control-btn-group rounded-md">
       <button
-        v-for="level in [2, 3, 4] as Level[]"
+        v-for="level in [2, 3, 4]"
         :key="level"
         type="button"
         class="control-btn control-btn-sm"
@@ -120,7 +120,6 @@
 
 <script setup lang="ts">
 import type { Editor } from '@tiptap/vue-3';
-import type { Level } from '@tiptap/extension-heading';
 
 const { editor } = defineProps<{ editor: Editor }>();
 

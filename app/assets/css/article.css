@@ -1,6 +1,10 @@
 .article {
   @apply space-y-5 after:clear-both after:block;
 
+  .tableWrapper {
+    @apply w-full overflow-auto;
+  }
+
   iframe {
     @apply w-full;
   }

@@ -9,12 +9,12 @@
     />
 
     <div class="flex gap-2 p-2">
-      <div class="control-btn-group">
+      <div class="control-btn-group rounded-md">
         <button
-          v-for="action in Object.keys(actions) as (keyof typeof actions)[]"
+          v-for="action in actionKeys"
           :key="action"
           type="button"
-          class="btn btn-sm"
+          class="control-btn control-btn-sm"
           :class="{ 'bg-blue-50/50 text-blue-500': editor.getAttributes('image').class === actions[action] }"
           @click="onSubmit(action)"
         >
@@ -58,6 +58,8 @@ const actions = {
   'float-right': 'float-right ml-4'
 };
 
+const actionKeys = Object.keys(actions) as (keyof typeof actions)[];
+
 const onSubmit = (align?: keyof typeof actions) => {
   if (align) image.class = actions[align];
 
@@ -80,17 +82,36 @@ watchEffect(() => {
 });
 </script>
 
-<style scoped>
-input[type='range']::-webkit-slider-thumb {
-  cursor: grab;
-  appearance: none;
-  width: 1rem;
-  height: 1rem;
-  border-radius: 50%;
-  background: var(--color-surface);
-}
+<style>
+input[type='range'] {
+  &::-webkit-slider-thumb {
+    cursor: grab;
+    appearance: none;
+    width: 1rem;
+    height: 1rem;
+    border: none;
+    border-radius: var(--radius-2xl);
+    background: var(--color-slate-600);
+    box-shadow: var(--shadow-sm);
+  }
 
-input[type='range']::-webkit-slider-thumb:active {
-  cursor: grabbing;
+  &::-moz-range-thumb {
+    cursor: grab;
+    appearance: none;
+    width: 1rem;
+    height: 1rem;
+    border: none;
+    border-radius: var(--radius-2xl);
+    background: var(--color-slate-600);
+    box-shadow: var(--shadow-sm);
+  }
+
+  &::-webkit-slider-thumb:active {
+    cursor: grabbing;
+  }
+
+  &::-moz-range-thumb:active {
+    cursor: grabbing;
+  }
 }
 </style>

@@ -33,7 +33,7 @@
 </template>
 
 <script setup lang="ts">
-import { EditorContent, useEditor, BubbleMenu, FloatingMenu } from '@tiptap/vue-3';
+import { EditorContent, useEditor } from '@tiptap/vue-3';
 import Document from '@tiptap/extension-document';
 import Paragraph from '@tiptap/extension-paragraph';
 import Text from '@tiptap/extension-text';
@@ -46,26 +46,12 @@ import Underline from '@tiptap/extension-underline';
 import Link from '@tiptap/extension-link';
 import Image from '@tiptap/extension-image';
 import Youtube from '@tiptap/extension-youtube';
-
-// 2.14
-import Placeholder from '@tiptap/extension-placeholder';
-import Gapcursor from '@tiptap/extension-gapcursor';
-import OrderedList from '@tiptap/extension-ordered-list';
-import BulletList from '@tiptap/extension-bullet-list';
-import ListItem from '@tiptap/extension-list-item';
-import Table from '@tiptap/extension-table';
-import TableCell from '@tiptap/extension-table-cell';
-import TableRow from '@tiptap/extension-table-row';
-import TableHeader from '@tiptap/extension-table-header';
-
 import { FaqExtension } from './extensions/FaqExtension';
 import { AccentBlockExtension } from './extensions/AccentBlockExtension';
-
-// TODO: 3.0.0
-// import { BubbleMenu, FloatingMenu } from '@tiptap/vue-3/menus';
-// import { OrderedList, BulletList, ListItem } from '@tiptap/extension-list';
-// import { TableKit } from '@tiptap/extension-table';
-// import { Gapcursor, Placeholder } from '@tiptap/extensions';
+import { BubbleMenu, FloatingMenu } from '@tiptap/vue-3/menus';
+import { OrderedList, BulletList, ListItem } from '@tiptap/extension-list';
+import { TableKit } from '@tiptap/extension-table';
+import { Gapcursor, Placeholder } from '@tiptap/extensions';
 
 defineProps<{
   label?: string;
@@ -90,14 +76,6 @@ const editor = useEditor({
     ListItem,
     Blockquote,
     Gapcursor,
-    Table.extend({
-      renderHTML({ HTMLAttributes }) {
-        return ['div', { class: 'w-full overflow-auto' }, ['table', HTMLAttributes, ['tbody', 0]]];
-      }
-    }).configure({ resizable: true }), // 2.14
-    TableCell, // 2.14
-    TableRow, // 2.14
-    TableHeader, // 2.14
     Link.configure({
       openOnClick: false,
       HTMLAttributes: { rel: null }
@@ -106,7 +84,12 @@ const editor = useEditor({
     Placeholder.configure({ placeholder: 'Enter Body' }),
     TextAlign.configure({ types: ['heading', 'paragraph'] }),
     Youtube.configure({ nocookie: true, modestBranding: true }),
-    // TableKit.configure({ table: { resizable: true } }), // TODO: 3.0.0
+    TableKit.configure({
+      table: {
+        resizable: true,
+        renderWrapper: true
+      }
+    }),
     Image.extend({
       addAttributes() {
         return {
@@ -147,7 +130,7 @@ onBeforeUnmount(() => unref(editor)?.destroy());
   }
 
   .ProseMirror-selectednode {
-    outline: 3px solid var(--color-accent);
+    outline: 3px solid var(--color-blue-600);
     border-radius: var(--radius-lg);
     transition: outline 0.2s ease-out;
   }
@@ -171,7 +154,7 @@ onBeforeUnmount(() => unref(editor)?.destroy());
     }
 
     .selectedCell:after {
-      background: var(--color-edison);
+      background: var(--color-blue-300);
       content: '';
       left: 0;
       right: 0;
@@ -183,7 +166,7 @@ onBeforeUnmount(() => unref(editor)?.destroy());
     }
 
     .column-resize-handle {
-      background-color: var(--color-accent);
+      background-color: var(--color-blue-600);
       bottom: 0;
       pointer-events: none;
       position: absolute;

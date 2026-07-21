@@ -4,8 +4,8 @@ const { resolve } = createResolver(import.meta.url);
 
 export default defineNuxtConfig({
   alias: {
-    '@null-kit/cp': resolve('./assets/css/source.css'),
-    '@null-kit/cp/article': resolve('./assets/css/article.css'),
+    '@null-kit/cp': resolve('./app/assets/css/source.css'),
+    '@null-kit/cp/article': resolve('./app/assets/css/article.css'),
     '@null-kit/cp/utils': resolve('./shared/utils')
   },
 
