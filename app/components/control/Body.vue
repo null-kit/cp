@@ -38,8 +38,13 @@
       class="sticky bottom-0 flex items-center gap-6 rounded-b-2xl border-t border-slate-200 bg-linear-0 to-white p-3 backdrop-blur-sm"
     >
       <slot name="footer">
-        <button type="submit" form="form" class="control-btn control-btn-main mx-auto w-full max-w-44">
-          {{ submit || 'Submit' }}
+        <button
+          type="submit"
+          form="form"
+          class="control-btn control-btn-main mx-auto w-full max-w-44"
+          :disabled="isSubmitting"
+        >
+          {{ isSubmitting ? 'Submitting...' : submit || 'Submit' }}
         </button>
       </slot>
     </footer>
@@ -53,4 +58,6 @@ defineProps<{
   actionName?: string;
   actionLink?: string;
 }>();
+
+const isSubmitting = useState<boolean>('controlFormSubmitting', () => false);
 </script>

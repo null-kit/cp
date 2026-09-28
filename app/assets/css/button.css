@@ -28,6 +28,7 @@
   @apply inset-ring inset-ring-white/30;
   @apply ring ring-green-700;
   @apply hover:bg-green-500;
+  @apply disabled:bg-green-700 disabled:hover:bg-green-700;
 }
 
 .control-btn-group {
