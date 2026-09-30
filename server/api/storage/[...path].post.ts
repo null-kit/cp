@@ -37,7 +37,7 @@ export default defineEventHandler(async (event) => {
     let fileName = media.filename.replace(/[^\w\s\-.]/g, '').replace(/\s+/g, '-');
 
     const today = new Date();
-    const date = today.toISOString().split('T')[0].split('-').join('');
+    const date = today.toISOString().split('T')[0]?.split('-').join('') ?? '';
     const seconds = today.getSeconds();
     const minutes = today.getMinutes();
 
