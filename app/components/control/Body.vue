@@ -35,7 +35,7 @@
 
     <footer
       v-if="$slots.footer || submit"
-      class="sticky bottom-0 flex items-center gap-6 rounded-b-2xl border-t border-slate-200 bg-linear-0 to-white p-3 backdrop-blur-sm"
+      class="sticky bottom-0 z-1 flex items-center gap-6 rounded-b-2xl border-t border-slate-200 bg-linear-0 to-white p-3 backdrop-blur-sm"
     >
       <slot name="footer">
         <button

@@ -33,6 +33,7 @@ export default defineEventHandler(async (event) => {
     if (!media.type || !media.filename) continue;
 
     const isImage = media.type.includes('image');
+    const isVideo = media.type.includes('video');
 
     let fileName = media.filename.replace(/[^\w\s\-.]/g, '').replace(/\s+/g, '-');
 
@@ -56,6 +57,14 @@ export default defineEventHandler(async (event) => {
       await setItemRaw(`${path}:${datetime}_${fileName}.webp`, compress);
 
       uploaded.push({ fileName, uploaded: true, url: join('/storage', path, `${datetime}_${fileName}.webp`) });
+    } else if (isVideo && fileName) {
+      fileName = fileName.replace(/\.[^/.]+$/, '');
+
+      const compress = await compressVideo(media.data, { width: Number(width), height: Number(height), fit });
+
+      await setItemRaw(`${path}:${datetime}_${fileName}.mp4`, compress);
+
+      uploaded.push({ fileName, uploaded: true, url: join('/storage', path, `${datetime}_${fileName}.mp4`) });
     } else {
       await setItemRaw(`${path}:${datetime}_${fileName}`, media.data);
 
