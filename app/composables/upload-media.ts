@@ -23,10 +23,8 @@ export const useUploadMedia = async (args: UploadMedia) => {
 
   const params: Record<string, string | number> = {};
 
-  if (width && height) {
-    params.width = width;
-    params.height = height;
-  }
+  if (width) params.width = width;
+  if (height) params.height = height;
 
   if (fit) params.fit = fit;
 
