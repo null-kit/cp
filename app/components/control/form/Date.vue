@@ -7,9 +7,23 @@
 
     <ControlDropdown>
       <template #trigger>
-        <button type="button" id="date" class="control-form-input truncate text-left">
-          {{ formatDateRange }}
-        </button>
+        <div class="relative">
+          <button type="button" id="date" class="control-form-input truncate text-left">
+            {{ formatDateRange }}
+          </button>
+
+          <button
+            v-if="clearable && model"
+            type="button"
+            title="Clear"
+            class="absolute inset-y-0 right-0 grid w-10 place-items-center opacity-60 hover:opacity-100"
+            @click.stop="clearDate"
+          >
+            <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" class="size-4">
+              <path fill="none" stroke-width="2" stroke="currentColor" d="m8 8 16 16M24 8 8 24" />
+            </svg>
+          </button>
+        </div>
       </template>
 
       <div class="p-2 text-center">
@@ -75,6 +89,16 @@
             </span>
           </button>
         </div>
+
+        <div v-if="time" class="mt-2 flex items-center justify-center gap-1 font-medium">
+          <select v-model="hours" class="control-form-input w-auto cursor-pointer py-1" @change="setTime">
+            <option v-for="hour in 24" :key="hour" :value="hour - 1">{{ pad(hour - 1) }}</option>
+          </select>
+          :
+          <select v-model="minutes" class="control-form-input w-auto cursor-pointer py-1" @change="setTime">
+            <option v-for="minute in 12" :key="minute" :value="(minute - 1) * 5">{{ pad((minute - 1) * 5) }}</option>
+          </select>
+        </div>
       </div>
     </ControlDropdown>
 
@@ -83,15 +107,22 @@
 </template>
 
 <script setup lang="ts">
-const { disabledDates = [] } = defineProps<{
+const {
+  disabledDates = [],
+  time = false,
+  min
+} = defineProps<{
   label?: string;
   required?: boolean;
   disabledDates?: Date[];
   iso?: boolean;
   name?: string;
+  time?: boolean;
+  min?: Date | string;
+  clearable?: boolean;
 }>();
 
-const [model, modifiers] = defineModel<Date | string | undefined>({
+const [model, modifiers] = defineModel<Date | string | null | undefined>({
   required: true,
   get(value) {
     if (value && modifiers.iso) {
@@ -159,10 +190,44 @@ const dates = computed(() => {
 });
 
 const formatDateRange = computed(() => {
-  if (selectedDates.value.length === 0) return 'Select date';
+  if (selectedDates.value.length === 0) return time ? 'Select date & time' : 'Select date';
 
-  return String(formatDate(selectedDates.value[0]!));
+  return String(formatDate(selectedDates.value[0]!, { time }));
 });
+
+const pad = (value: number) => String(value).padStart(2, '0');
+
+const hours = ref(9);
+const minutes = ref(0);
+
+const withTime = (date: Date) => {
+  if (!time) return date;
+
+  const result = new Date(date);
+  result.setHours(hours.value, minutes.value, 0, 0);
+
+  return result;
+};
+
+const setTime = () => {
+  const date = selectedDates.value[0];
+
+  if (date) selectDate(date);
+};
+
+// Date() parses date-only strings as UTC, keep them in local time
+const toLocalDate = (value: Date | string) => {
+  if (typeof value !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return new Date(value);
+
+  const [year, month, day] = value.split('-').map(Number);
+
+  return new Date(year!, month! - 1, day);
+};
+
+const clearDate = () => {
+  selectedDates.value = [];
+  model.value = null;
+};
 
 const prevMonth = () => {
   if (currentMonth.value === 0) {
@@ -189,8 +254,10 @@ const setYearMonth = () => {
 const selectDate = (date: Date) => {
   if (isDisabled(date)) return;
 
-  selectedDates.value = [date];
-  model.value = modifiers.iso ? formatDate(date, { format: 'iso' }) : date;
+  const value = withTime(date);
+
+  selectedDates.value = [value];
+  model.value = modifiers.iso ? formatDate(value, { format: 'iso' }) : value;
 
   currentMonth.value = date.getMonth();
   currentYear.value = date.getFullYear();
@@ -203,12 +270,25 @@ const isSelected = (date: Date) => {
 const isOutside = (date: Date) => date.getMonth() !== currentMonth.value;
 
 const isDisabled = (date: Date) => {
+  if (min && date < new Date(new Date(min).toDateString())) return true;
+
   return disabledDates.some((d) => new Date(d).toDateString() === date.toDateString());
 };
 
-onMounted(() => {
-  if (model.value) {
-    selectedDates.value = [new Date(model.value)];
-  }
-});
+watch(
+  model,
+  (value) => {
+    if (!value) {
+      selectedDates.value = [];
+      return;
+    }
+
+    const date = toLocalDate(value);
+
+    selectedDates.value = [date];
+    hours.value = date.getHours();
+    minutes.value = date.getMinutes() - (date.getMinutes() % 5);
+  },
+  { immediate: true }
+);
 </script>
