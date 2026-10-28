@@ -72,7 +72,7 @@
             v-for="(date, index) in dates"
             :key="index"
             type="button"
-            class="bg-white p-1 ring ring-slate-200 disabled:cursor-not-allowed disabled:text-slate-100"
+            class="bg-white p-1 ring ring-slate-200 disabled:cursor-not-allowed! disabled:text-slate-200"
             :disabled="isDisabled(date)"
             @click="selectDate(date)"
           >
@@ -82,8 +82,9 @@
                 { 'opacity-40': isOutside(date) },
                 isSelected(date)
                   ? 'bg-blue-500 text-white hover:bg-blue-500'
-                  : 'hover:bg-blue-500/20 hover:text-blue-500'
+                  : 'not-data-disabled:hover:bg-blue-500/20 not-data-disabled:hover:text-blue-500'
               ]"
+              :data-disabled="isDisabled(date) || undefined"
             >
               {{ date.getDate() }}
             </span>
@@ -91,11 +92,25 @@
         </div>
 
         <div v-if="time" class="mt-2 flex items-center justify-center gap-1 font-medium">
-          <select v-model="hours" class="control-form-input w-auto cursor-pointer py-1" @change="setTime">
+          <select v-model="hours" class="control-form-input size-10! cursor-pointer py-1 text-center" @change="setTime">
             <option v-for="hour in 24" :key="hour" :value="hour - 1">{{ pad(hour - 1) }}</option>
           </select>
+
           :
-          <select v-model="minutes" class="control-form-input w-auto cursor-pointer py-1" @change="setTime">
+
+          <span
+            v-if="time === 'hours'"
+            class="control-form-input grid size-10! place-items-center bg-slate-50 text-center"
+          >
+            00
+          </span>
+
+          <select
+            v-else
+            v-model="minutes"
+            class="control-form-input size-10! cursor-pointer py-1 text-center"
+            @change="setTime"
+          >
             <option v-for="minute in 12" :key="minute" :value="(minute - 1) * 5">{{ pad((minute - 1) * 5) }}</option>
           </select>
         </div>
@@ -117,7 +132,7 @@ const {
   disabledDates?: Date[];
   iso?: boolean;
   name?: string;
-  time?: boolean;
+  time?: boolean | 'hours';
   min?: Date | string;
   clearable?: boolean;
 }>();
@@ -192,7 +207,7 @@ const dates = computed(() => {
 const formatDateRange = computed(() => {
   if (selectedDates.value.length === 0) return time ? 'Select date & time' : 'Select date';
 
-  return String(formatDate(selectedDates.value[0]!, { time }));
+  return String(formatDate(selectedDates.value[0]!, { time: !!time }));
 });
 
 const pad = (value: number) => String(value).padStart(2, '0');
@@ -287,7 +302,7 @@ watch(
 
     selectedDates.value = [date];
     hours.value = date.getHours();
-    minutes.value = date.getMinutes() - (date.getMinutes() % 5);
+    minutes.value = time === 'hours' ? 0 : date.getMinutes() - (date.getMinutes() % 5);
   },
   { immediate: true }
 );
