@@ -6,7 +6,7 @@
           v-model="model"
           :class="[
             'peer cursor-pointer appearance-none ring duration-200 checked:ring-green-600',
-            'disabled:cursor-not-allowed disabled:bg-slate-50 disabled:ring-slate-100',
+            'disabled:cursor-not-allowed disabled:bg-slate-50 disabled:not-checked:ring-slate-100 disabled:checked:bg-green-600/50',
             isSwitch || type === 'radio' ? 'rounded-full' : 'rounded-md',
             isSwitch ? 'h-6 w-11 bg-slate-100 shadow checked:bg-green-500' : 'size-5 bg-blue-500 shadow',
             indeterminate ? 'ring-green-600' : 'ring-slate-200'
@@ -62,7 +62,7 @@
 
     <ControlFormValidate v-if="name" :name />
 
-    <div v-if="help || $slots.help" class="field-help">
+    <div v-if="help || $slots.help" class="control-form-help">
       <slot name="help">{{ help }}</slot>
     </div>
   </label>
