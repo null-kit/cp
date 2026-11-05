@@ -3,6 +3,8 @@ import { createResolver } from 'nuxt/kit';
 const { resolve } = createResolver(import.meta.url);
 
 export default defineNuxtConfig({
+  modules: [resolve('./modules/schedule')],
+
   alias: {
     '@null-kit/cp': resolve('./app/assets/css/source.css'),
     '@null-kit/cp/article': resolve('./app/assets/css/article.css'),

@@ -19,7 +19,6 @@
   },
   "dependencies": {
     "@floating-ui/vue": "^1.1.6",
-    "@prisma/client": "^7.8.0",
     "@tiptap/extension-blockquote": "^3.28.0",
     "@tiptap/extension-bold": "^3.28.0",
     "@tiptap/extension-bullet-list": "^3.28.0",
@@ -42,17 +41,30 @@
     "@tiptap/vue-3": "^3.28.0",
     "@types/bcrypt": "^6.0.0",
     "bcrypt": "^6.0.0",
-    "sharp": "^0.35.5",
-    "zod": "^4.4.3"
+    "sharp": "^0.35.5"
   },
   "devDependencies": {
     "@nuxt/eslint": "latest",
+    "@prisma/client": "^7.8.0",
     "@tailwindcss/postcss": "latest",
     "nuxt": "^4.4.6",
     "prettier": "^3.8.4",
     "prettier-plugin-tailwindcss": "latest",
     "tailwindcss": "latest",
-    "vue": "latest"
+    "vue": "latest",
+    "zod": "^4.4.3"
+  },
+  "peerDependencies": {
+    "@prisma/client": ">=7",
+    "zod": "^4.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@prisma/client": {
+      "optional": true
+    },
+    "zod": {
+      "optional": true
+    }
   },
   "overrides": {
     "h3": "1.15.11"
