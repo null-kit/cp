@@ -1,6 +1,6 @@
 import { Node, mergeAttributes } from '@tiptap/core';
 import { VueNodeViewRenderer } from '@tiptap/vue-3';
-import FaqComponent from '@/components/control/form/editor/extensions/FaqComponent.vue';
+import FaqComponent from './FaqComponent.vue';
 
 export interface Options {
   HTMLAttributes: Record<string, any>;

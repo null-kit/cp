@@ -1,6 +1,6 @@
 import { Node, mergeAttributes } from '@tiptap/core';
 import { VueNodeViewRenderer } from '@tiptap/vue-3';
-import AccentBlockComponent from '@/components/control/form/editor/extensions/AccentBlockComponent.vue';
+import AccentBlockComponent from './AccentBlockComponent.vue';
 
 export interface Options {
   HTMLAttributes: Record<string, any>;

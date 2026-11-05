@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt';
-import z from 'zod/v4';
+import { z } from 'zod';
 
 export default defineEventHandler(async (event) => {
   const loginSchema = z.object({
