@@ -11,7 +11,7 @@
     >
       <div
         v-if="isOpen"
-        class="absolute top-full z-1 mt-2 w-fit space-y-2 rounded-xl bg-white shadow ring ring-slate-200"
+        class="absolute top-full z-2 mt-2 w-fit space-y-2 rounded-xl bg-white shadow ring ring-slate-200"
         @click.stop
       >
         <slot />
