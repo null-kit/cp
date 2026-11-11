@@ -7,23 +7,17 @@ defineRouteMeta({
 });
 
 export default defineEventHandler(async (event) => {
-  const { sessionName, sessionSecret } = useRuntimeConfig(event);
+  const config = getSessionConfig(event);
 
-  const session = await getSession(event, {
-    name: sessionName,
-    password: sessionSecret
-  });
+  try {
+    return await requireAuth(event);
+  } catch (error) {
+    if ((error as { statusCode?: number }).statusCode !== 401) throw error;
 
-  if (!session.data.user) {
-    await clearSession(event, {
-      name: sessionName,
-      password: sessionSecret
-    });
+    await clearSession(event, config);
 
-    deleteCookie(event, sessionName);
+    deleteCookie(event, config.name);
 
     return null;
   }
-
-  return session.data.user;
 });

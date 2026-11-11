@@ -6,6 +6,17 @@ defineRouteMeta({
   }
 });
 
+const INLINE_TYPES: Record<string, string> = {
+  '.webp': 'image/webp',
+  '.png': 'image/png',
+  '.jpg': 'image/jpeg',
+  '.jpeg': 'image/jpeg',
+  '.gif': 'image/gif',
+  '.avif': 'image/avif',
+  '.mp4': 'video/mp4',
+  '.pdf': 'application/pdf'
+};
+
 export default defineEventHandler(async (event) => {
   const path = getRouterParam(event, 'path');
 
@@ -15,14 +26,20 @@ export default defineEventHandler(async (event) => {
 
   if (!file) throw createError({ statusCode: 404, statusMessage: 'File not found' });
 
-  if (path.endsWith('.pdf')) setResponseHeader(event, 'Content-Type', 'application/pdf');
-  if (path.endsWith('.webp')) setResponseHeader(event, 'Content-Type', 'image/webp');
+  setResponseHeader(event, 'X-Content-Type-Options', 'nosniff');
+
+  const inline = Object.entries(INLINE_TYPES).find(([extension]) => path.toLowerCase().endsWith(extension));
+
+  if (inline) {
+    setResponseHeader(event, 'Content-Type', inline[1]);
+  } else {
+    setResponseHeader(event, 'Content-Type', 'application/octet-stream');
+    setResponseHeader(event, 'Content-Disposition', 'attachment');
+  }
 
   if (path.endsWith('.mp4')) {
-    setResponseHeader(event, 'Content-Type', 'video/mp4');
     setResponseHeader(event, 'Accept-Ranges', 'bytes');
 
-    // Video players (Safari in particular) require partial content responses to play and seek
     const range = getHeader(event, 'range')?.match(/bytes=(\d*)-(\d*)/);
 
     if (range && Buffer.isBuffer(file)) {

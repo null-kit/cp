@@ -6,14 +6,11 @@ defineRouteMeta({
 });
 
 export default defineEventHandler(async (event) => {
-  const { sessionName, sessionSecret } = useRuntimeConfig(event);
+  const config = getSessionConfig(event);
 
-  await clearSession(event, {
-    name: sessionName,
-    password: sessionSecret
-  });
+  await clearSession(event, config);
 
-  deleteCookie(event, sessionName);
+  deleteCookie(event, config.name);
 
   return { message: 'Logged out successfully' };
 });

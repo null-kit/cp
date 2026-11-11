@@ -7,9 +7,7 @@ defineRouteMeta({
 });
 
 export default defineEventHandler(async (event) => {
-  const noAuth = getHeader(event, 'NoAuth');
-
-  if (!noAuth) await requireAuth(event);
+  await requireAuth(event);
 
   const path = getRouterParam(event, 'path');
 

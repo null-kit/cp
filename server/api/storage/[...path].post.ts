@@ -16,10 +16,10 @@ type Query = {
   fit?: keyof FitEnum;
 };
 
-export default defineEventHandler(async (event) => {
-  const noAuth = getHeader(event, 'NoAuth');
+const ALLOWED_FILES = /\.(pdf|txt|csv|xls|xlsx|doc|docx|ppt|pptx|zip)$/i;
 
-  if (!noAuth) await requireAuth(event);
+export default defineEventHandler(async (event) => {
+  await requireAuth(event);
 
   const { width, height, fit = 'cover' }: Query = getQuery(event);
   const path = getRouterParam(event, 'path');
@@ -66,6 +66,10 @@ export default defineEventHandler(async (event) => {
 
       uploaded.push({ fileName, uploaded: true, url: join('/storage', path, `${datetime}_${fileName}.mp4`) });
     } else {
+      if (!ALLOWED_FILES.test(fileName)) {
+        throw createError({ statusCode: 415, message: `File type is not allowed: ${fileName}` });
+      }
+
       await setItemRaw(`${path}:${datetime}_${fileName}`, media.data);
 
       uploaded.push({ fileName, uploaded: true, url: join('/storage', path, `${datetime}_${fileName}`) });

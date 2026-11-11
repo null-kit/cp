@@ -5,11 +5,10 @@ type UploadMedia = {
   width?: number | null;
   height?: number | null;
   fit?: string;
-  noAuth?: string;
 };
 
 export const useUploadMedia = async (args: UploadMedia) => {
-  const { newFile, oldFile, directory, width, height, fit, noAuth } = args;
+  const { newFile, oldFile, directory, width, height, fit } = args;
 
   if (oldFile) await $fetch(`/api/storage/${oldFile}`, { method: 'DELETE' });
 
@@ -31,8 +30,7 @@ export const useUploadMedia = async (args: UploadMedia) => {
   const response = await $fetch(`/api/storage/${directory}`, {
     method: 'POST',
     params,
-    body,
-    ...(noAuth && { headers: { NoAuth: noAuth } })
+    body
   });
 
   const urls = response.map((result) => result.url);
