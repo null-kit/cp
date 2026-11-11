@@ -1,6 +1,6 @@
 declare global {
   interface Window {
-    grecaptcha: {
+    grecaptcha?: {
       ready(callback: () => void): void;
       execute(siteKey: string, options?: { action?: string }): Promise<string>;
     };
@@ -15,33 +15,61 @@ declare global {
  * @example
  * const recaptcha = await useRecaptcha().validate();
  * await $fetch('/api/forms/contact', { method: 'POST', body: { ...formData, recaptcha } });
+ *
+ * // optional: preload the script on first interaction
+ * <form @mouseover.once="useRecaptcha().init">
  */
 export const useRecaptcha = () => {
   const recaptchaSite = useRuntimeConfig().public.recaptchaSite as string | undefined;
 
   if (!recaptchaSite) throw new Error('reCaptcha site key is not configured.');
 
+  /** Injects the reCAPTCHA script once. Safe to call repeatedly. */
+  const init = () => {
+    if (window.grecaptcha || document.querySelector('script[data-recaptcha]')) return;
+
+    const script = document.createElement('script');
+
+    script.src = `https://www.google.com/recaptcha/api.js?render=${recaptchaSite}`;
+    script.async = true;
+    script.dataset.recaptcha = '';
+
+    document.head.appendChild(script);
+  };
+
+  /**
+   * Never throws: on failure (script blocked, timeout) it returns an empty token, so the form
+   * request still goes out and the server answers with a visible "verification failed" error
+   * instead of the form hanging in its loading state.
+   */
   const validate = async (action = 'submit') => {
-    await new Promise<void>((resolve) => {
-      const init = () => {
-        if (typeof window.grecaptcha !== 'undefined') return window.grecaptcha.ready(resolve);
-
-        useHead({ script: [{ src: `https://google.com/recaptcha/api.js?render=${recaptchaSite}`, async: true }] });
-
-        setTimeout(init, 50);
-      };
-
+    try {
       init();
-    });
 
-    const token = await window.grecaptcha.execute(recaptchaSite, { action });
+      await new Promise<void>((resolve, reject) => {
+        const startedAt = Date.now();
 
-    if (!token) throw new Error('No token received from ReCaptcha');
+        const wait = () => {
+          if (window.grecaptcha?.ready) return window.grecaptcha.ready(resolve);
 
-    return token;
+          if (Date.now() - startedAt > 10_000) return reject(new Error('reCaptcha failed to load'));
+
+          setTimeout(wait, 50);
+        };
+
+        wait();
+      });
+
+      return (await window.grecaptcha!.execute(recaptchaSite, { action })) || '';
+    } catch (error) {
+      console.error('[reCaptcha]', error);
+
+      return '';
+    }
   };
 
   return {
+    init,
     validate
   };
 };
