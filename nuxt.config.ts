@@ -24,7 +24,17 @@ export default defineNuxtConfig({
   },
 
   routeRules: {
-    '/control/**': { ssr: false },
+    '/**': {
+      headers: {
+        'strict-transport-security': 'max-age=31536000; includeSubDomains',
+        'x-frame-options': 'SAMEORIGIN',
+        'x-content-type-options': 'nosniff',
+        'referrer-policy': 'strict-origin-when-cross-origin',
+        'permissions-policy': 'camera=(), microphone=(), geolocation=()',
+        'x-xss-protection': '0'
+      }
+    },
+    '/control/**': { ssr: false, headers: { 'x-robots-tag': 'noindex, nofollow' } },
     '/storage/**': {
       proxy: '/api/storage/**',
       headers: { 'cache-control': 'public, immutable', expires: '1y' }
