@@ -163,7 +163,7 @@ const removeRecord = async () => {
     }
 
     $fetch(props.routeDelete, { method: 'DELETE' }).then(() => {
-      useToast('success', 'Record has been deleted');
+      useToast().setToast('Success!', 'Record has been deleted', 'success');
       refreshNuxtData();
     });
   }
